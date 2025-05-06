@@ -11,6 +11,7 @@ import {
   
   const connectButton = document.getElementById("connectButton")
   const fundButton = document.getElementById("fundButton")
+  const balanceButton = document.getElementById("balanceButton")
   const ethAmountInput = document.getElementById("ethAmount")
   
   let walletClient
@@ -81,7 +82,30 @@ import {
     })
     return currentChain
   }
+
+
+  async function getBalance() {
+    
+    if (typeof window.ethereum !== "undefined") {
+        publicClient = createPublicClient({
+            transport: custom(window.ethereum),
+        })
+
+        const balance = await publicClient.getBalance({
+            address: contractAddress,
+        })
+
+        console.log(formatEther(balance))
+        
+    } else {
+        balanceButton.innerHTML = "Please install MetaMask"
+    }
+
+}
+
+  
   
   // Event listeners
   connectButton.onclick = connect
   fundButton.onclick = fund
+  balanceButton.onclick = getBalance
